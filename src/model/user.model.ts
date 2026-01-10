@@ -1,36 +1,34 @@
 import mongoose from "mongoose";
 
 interface IUser{
-    id?:mongoose.Types.ObjectId;
-
-    name:string;
-    email:string;
-    password?:string;
-    image?:string;
-    phone?:string;
-    role: "user" | "vender" | "admin"
+    id?: mongoose.Types.ObjectId;
+    name: string;
+    email: string;
+    password?: string;
+    image?: string;
+    phone?: string;
+    role: "user" | "vender" | "admin";
 
     // for vender
-    shopName?:string;
-    shopAddress?:string;
-    gstNumber?:string;
-    isApproved?:boolean;
-    verificationStatus : "pending" | "approved" | "rejected"
-    requestedAt:Date;
-    approvedAt:Date;
-    rejectedReason?:string;
+    shopName?: string;
+    shopAddress?: string;
+    gstNumber?: string;
+    isApproved?: boolean;
+    verificationStatus?: "pending" | "approved" | "rejected";
+    requestedAt?: Date;
+    approvedAt?: Date;
+    rejectedReason?: string;
 
-    vendorProducts?:mongoose.Types.ObjectId[];
-    orders?:mongoose.Types.ObjectId[];
+    vendorProducts?: mongoose.Types.ObjectId[];
+    orders?: mongoose.Types.ObjectId[];
 
-    cart?:{
-        product:mongoose.Types.ObjectId;
-        quantity:Number
+    cart?: {
+        product: mongoose.Types.ObjectId;
+        quantity: number;
     }[];
 
-    createdAt?:Date;
-    updatedAt?:Date;
-
+    createdAt?: Date;
+    updatedAt?: Date;
 
 }
 
@@ -66,7 +64,7 @@ const userSchema = new mongoose.Schema<IUser>({
         type:String
     },
     gstNumber:{
-        type:Number
+        type:String
     },
     isApproved:{
         type:Boolean,
@@ -88,17 +86,17 @@ const userSchema = new mongoose.Schema<IUser>({
    },
    vendorProducts:[{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"product"
+        ref:"Product"
    }],
    orders:[{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"orders"
+        ref:"Order"
    }],
    cart:[
        {
           product:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"orders"
+                        ref:"Product"
           },
           quantity:{
             type:Number,
@@ -108,7 +106,7 @@ const userSchema = new mongoose.Schema<IUser>({
    ]
 
 
-},{timestemps:true})
+},{timestamps:true})
 
-const User = mongoose.model?.user || mongoose.model<IUser>("user",userSchema)
+const User = (mongoose.models.User as mongoose.Model<IUser>) || mongoose.model<IUser>("User", userSchema)
 export default User
