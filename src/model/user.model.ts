@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
-interface IUser{
+interface IUser {
     id?: mongoose.Types.ObjectId;
     name: string;
     email: string;
     password?: string;
     image?: string;
     phone?: string;
-    role: "user" | "vender" | "admin";
+    role: "user" | "vendor" | "admin";
 
-    // for vender
+    // for vendor
     shopName?: string;
     shopAddress?: string;
     gstNumber?: string;
@@ -33,80 +33,80 @@ interface IUser{
 }
 
 const userSchema = new mongoose.Schema<IUser>({
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    password:{
-        type:String
+    password: {
+        type: String
     },
-    image:{
-        type:String
+    image: {
+        type: String
     },
-    phone:{
-        type:String
+    phone: {
+        type: String
     },
-    role:{
-        type:String,
-        enum:["user","vender","admin"],
-        default:"user"
+    role: {
+        type: String,
+        enum: ["user", "vendor", "admin"],
+        default: "user"
     },
 
-    shopName:{
-        type:String
+    shopName: {
+        type: String
     },
-    shopAddress:{
-        type:String
+    shopAddress: {
+        type: String
     },
-    gstNumber:{
-        type:String
+    gstNumber: {
+        type: String
     },
-    isApproved:{
-        type:Boolean,
-        default:false
+    isApproved: {
+        type: Boolean,
+        default: false
     },
-    verificationStatus:{
-        type:String,
-        enum:["pending","approved","rejected"],
-        default:"pending"
+    verificationStatus: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending"
     },
-   approvedAt:{
-        type:Date
-   },
-   requestedAt:{
-    type:Date
-   },
-   rejectedReason:{
-    type:String
-   },
-   vendorProducts:[{
-    type:mongoose.Schema.Types.ObjectId,
-        ref:"Product"
-   }],
-   orders:[{
-    type:mongoose.Schema.Types.ObjectId,
-        ref:"Order"
-   }],
-   cart:[
-       {
-          product:{
-            type:mongoose.Schema.Types.ObjectId,
-                        ref:"Product"
-          },
-          quantity:{
-            type:Number,
-            default:1
-          }
-       }
-   ]
+    approvedAt: {
+        type: Date
+    },
+    requestedAt: {
+        type: Date
+    },
+    rejectedReason: {
+        type: String
+    },
+    vendorProducts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product"
+    }],
+    orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order"
+    }],
+    cart: [
+        {
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            },
+            quantity: {
+                type: Number,
+                default: 1
+            }
+        }
+    ]
 
 
-},{timestamps:true})
+}, { timestamps: true })
 
 const User = (mongoose.models.User as mongoose.Model<IUser>) || mongoose.model<IUser>("User", userSchema)
 export default User

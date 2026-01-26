@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-
+import Providers from "../model/Provider";
 
 export const metadata: Metadata = {
   title: "MultiCart",
-  description: "Multi_-Vender-e-commers website",
+  description: "Multi-vendor e-commerce website",
 };
 
 export default function RootLayout({
@@ -16,9 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-          >
-        {children}
+      <body>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
