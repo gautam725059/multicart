@@ -8,6 +8,7 @@ import { IoEye } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
+import { signIn } from "next-auth/react";
 
 function Register() {
   const [step, setStep] = useState(1);
@@ -183,6 +184,7 @@ function Register() {
               </div>
 
               <motion.button
+              onClick={()=>signIn("google ", {callbackUrl:"/"})}
                 type="button"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}

@@ -6,7 +6,7 @@ import { IoEye } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import React, { useState } from 'react'
 import { ClipLoader } from 'react-spinners';
-import { signIn , useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 
 const LoginPage = () => {
@@ -110,6 +110,7 @@ const LoginPage = () => {
             </div>
 
             <motion.button
+              onClick={() => signIn("google", { callbackUrl: "/" })}
               type="button"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}

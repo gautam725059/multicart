@@ -3,6 +3,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import connectDb from "./lib/connectDB"
 import bcrypt from "bcryptjs"
+import Google from "next-auth/providers/google"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -35,27 +36,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
             }
 
+        }),
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID as string,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+
         })
     ],
     callbacks: {
+
+        async signIn({ user, account }) {
+            if (account?.provider === "google") {
+                await connectDb()
+                let DBUser = await User.findOne({ email: user.email })
+                if (!DBUser) {
+                    DBUser = await User.create({
+                        name: user.name,
+                        email: user.email,
+                        image: user.image,
+                        role: "user",
+
+                    })
+
+                }
+                user.id = DBUser._id.toString()
+                user.role = DBUser.role
+            }
+            return true
+        },
+
+
+
+
         jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.name = user.name;
-                token.email = user.email;
                 token.role = user.role;
             }
-            console.log("JWT Callback Token:", token);
             return token;
         },
         session({ session, token }) {
             if (token) {
                 session.user.id = token.id as string;
-                session.user.name = token.name as string;
-                session.user.email = token.email as string;
                 session.user.role = token.role as "user" | "vendor" | "admin";
             }
-            console.log("Session Callback Session:", session);
             return session;
         }
     },
