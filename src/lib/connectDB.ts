@@ -2,10 +2,10 @@ import mongoose from "mongoose"
 
 const mongoDBUrl = process.env.MONGODB_URL
 
-let cached = (global as any).mongoose
+let cached = global.mongoose
 
 if (!cached) {
-    cached = (global as any).mongoose = { conn: null, promise: null }
+    cached = global.mongoose = { conn: null, promise: null }
 }
 
 const connectDb = async () => {

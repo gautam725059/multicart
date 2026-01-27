@@ -53,14 +53,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     DBUser = await User.create({
                         name: user.name,
                         email: user.email,
-                        image: user.image,
+
                         role: "user",
 
                     })
 
                 }
                 user.id = DBUser._id.toString()
-                user.role = DBUser.role
+                user.role = DBUser.role as "user" | "vendor" | "admin"
             }
             return true
         },
@@ -70,8 +70,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
-                token.role = user.role;
+                token.id = user.id as string;
+                token.role = user.role as string;
             }
             return token;
         },

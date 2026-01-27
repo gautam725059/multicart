@@ -184,7 +184,7 @@ function Register() {
               </div>
 
               <motion.button
-              onClick={()=>signIn("google ", {callbackUrl:"/"})}
+                onClick={() => signIn("google", { callbackUrl: "/" })}
                 type="button"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
