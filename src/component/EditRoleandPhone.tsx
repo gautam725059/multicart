@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'motion/react'
 import { FaUser, FaStore, FaUserShield } from 'react-icons/fa'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { set } from 'mongoose'
+import { useRouter } from 'next/navigation'
 
 const EditRoleandPhone = () => {
 
@@ -15,7 +17,9 @@ const EditRoleandPhone = () => {
         { label: "Vendor", icon: <FaStore />, value: "vendor" },
         { label: "Admin", icon: <FaUserShield />, value: "admin" },
     ];
+    const [loading, setLoading] = useState(false)
     const [adminExists, setAdminExists] = useState<boolean>(false)
+    const router = useRouter();
     useEffect(() => {
         const checkAdmin = async () => {
             try {
@@ -29,7 +33,26 @@ const EditRoleandPhone = () => {
         }
         checkAdmin()
     }, [])
-
+    const handaleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+       if(!role || !phone){
+        alert("Please select a role and enter phone number")
+        return;
+       }
+       setLoading(true);
+       try {
+        const result = await axios.post('/api/user/edit-role-phone', {
+            role,
+            phone
+        });
+        console.log("Role and phone updated:", result.data);
+        alert("Role and phone updated successfully")
+        setLoading(false);
+       } catch (error) {
+        console.error("Error updating role and phone:", error);
+        setLoading(false);
+        router.push("/")
+    }
     return (
         <div className="min-h-screen flex items-center 
     justify-center bg-gradient-to-r from-gray-500 via-black
@@ -46,7 +69,7 @@ const EditRoleandPhone = () => {
                     <p className='text-center text-gray-300 mb-8 text-base'>
                         select your role and enter your mobile number to contuinue...
                     </p>
-                    <form action="" className='flex flex-col gap-8'>
+                    <form onSubmit={handaleSubmit} className='flex flex-col gap-8'>
                         <input
                             type='text'
                             placeholder='Enter your mobile number..'
@@ -84,6 +107,7 @@ const EditRoleandPhone = () => {
 
         </div>
     )
+}
 }
 
 export default EditRoleandPhone
