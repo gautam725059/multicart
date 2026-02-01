@@ -12,7 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 email: { label: "email", type: "email" },
                 password: { label: "password", type: "password" },
             },
-            async authorize(credentials, request) {
+            async authorize(credentials) {
                 await connectDb()
                 const email = credentials.email as string
                 const password = credentials.password as string

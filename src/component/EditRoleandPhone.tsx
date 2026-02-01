@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'motion/react'
 import { FaUser, FaStore, FaUserShield } from 'react-icons/fa'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { set } from 'mongoose'
 import { useRouter } from 'next/navigation'
 
 const EditRoleandPhone = () => {
@@ -33,25 +32,26 @@ const EditRoleandPhone = () => {
         }
         checkAdmin()
     }, [])
-    const handaleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-       if(!role || !phone){
-        alert("Please select a role and enter phone number")
-        return;
-       }
-       setLoading(true);
-       try {
-        const result = await axios.post('/api/user/edit-role-phone', {
-            role,
-            phone
-        });
-        console.log("Role and phone updated:", result.data);
-        alert("Role and phone updated successfully")
-        setLoading(false);
-       } catch (error) {
-        console.error("Error updating role and phone:", error);
-        setLoading(false);
-        router.push("/")
+        if (!role || !phone) {
+            alert("Please select a role and enter phone number")
+            return;
+        }
+        setLoading(true);
+        try {
+            const result = await axios.post('/api/user/edit-role-phone', {
+                role,
+                phone
+            });
+            console.log("Role and phone updated:", result.data);
+            alert("Role and phone updated successfully")
+            setLoading(false);
+        } catch (error) {
+            console.error("Error updating role and phone:", error);
+            setLoading(false);
+            router.push("/")
+        }
     }
     return (
         <div className="min-h-screen flex items-center 
@@ -69,7 +69,7 @@ const EditRoleandPhone = () => {
                     <p className='text-center text-gray-300 mb-8 text-base'>
                         select your role and enter your mobile number to contuinue...
                     </p>
-                    <form onSubmit={handaleSubmit} className='flex flex-col gap-8'>
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
                         <input
                             type='text'
                             placeholder='Enter your mobile number..'
@@ -100,6 +100,16 @@ const EditRoleandPhone = () => {
                             }
                         </div>
 
+                        <motion.button
+                            disabled={loading}
+                            type="submit"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white 
+                                font-bold py-4 rounded-xl transition duration-300 shadow-lg"
+                        >
+                            {loading ? "Updating..." : "Continue"}
+                        </motion.button>
                     </form>
 
                 </motion.div>
@@ -107,7 +117,6 @@ const EditRoleandPhone = () => {
 
         </div>
     )
-}
 }
 
 export default EditRoleandPhone

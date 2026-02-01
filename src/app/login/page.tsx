@@ -16,8 +16,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const session = useSession();
-  console.log(session.data?.user);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
